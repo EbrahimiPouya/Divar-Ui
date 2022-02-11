@@ -8,14 +8,16 @@ class Table extends Component {
         columns: PropTypes.array,
         data: PropTypes.array,
         onSort: PropTypes.func,
+        sortKey: PropTypes.object,
     }
     static defaultProps={
         columns: [],
         data: [],
         onSort: ()=>{},
+        sortKey: undefined,
     }
     render() {
-        let {columns, data, onSort} = this.props;
+        let {columns, data, onSort, sortKey} = this.props;
         return (
             <table border={1}>
                 <THead
@@ -23,6 +25,7 @@ class Table extends Component {
                     onSort={(key, operation)=>{
                         onSort(key, operation);
                     }}
+                    sortKey={sortKey}
                 />
                 <TBody
                     columns={columns}

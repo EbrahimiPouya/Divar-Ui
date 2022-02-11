@@ -1,60 +1,83 @@
+import React, {Component} from 'react';
 import '../assets/css/App.css';
 import DataTable from "./components/data/dataTable/DataTable";
+// import data from '../../public/data.json'
 
-function App() {
-  return (
-    <div className="App">
-      <DataTable
-          columns={[
-              {label: 'نام', key: 'firstName', sortable: true },
-              {label: 'نام خانوادگی', key: 'lastName'},
-          ]}
-          filters={[
-              {label: 'نام', key: 'firstName', type: 'string' },
-              {label: 'تاریخ', key: 'date', type: 'date' },
-              {label: 'نام آگهی', key: 'adName', type: 'string' },
-              {label: 'فیلد', key: 'field', type: 'select',
+class App extends Component{
+  constructor(props) {
+    super(props);
+    this.state={
+      loading: false,
+      data: undefined,
+    }
+  }
+  componentDidMount() {
+    this.reload();
+  }
+
+  reload = ()=>{
+    this.setState({loading: true}, ()=>{
+      this.getData()
+    })
+  }
+
+  getData = ()=>{
+    fetch("data/data.json")
+        .then(res => res.json())
+        .then(
+            (result) => {
+              this.setState({
+                loading: false,
+                data: result.slice(0 ,100)
+              });
+            },
+            (error) => {
+              this.setState({
+                isLoaded: true,
+                error: true,
+              });
+            }
+        )
+  }
+
+  render() {
+    let {data, loading} = this.state;
+    return (
+        <div className="App">
+          {!loading && data &&
+          <DataTable
+              columns={[
+                {label: 'نام', key: 'name', sortable: true},
+                {label: 'تاریخ', key: 'date', sortable: true},
+                {label: 'عنوان آگهی', key: 'title', sortable: true},
+                {label: 'فیلد', key: 'field', sortable: true},
+                {label: 'مقدار فبلی', key: 'old_value'},
+                {label: 'مقدار جدید', key: 'new_value'},
+              ]}
+              filters={[
+                {label: 'نام', key: 'name', type: 'string'},
+                {label: 'تاریخ', key: 'date', type: 'date'},
+                {label: 'عنوان آگهی', key: 'title', type: 'string'},
+                {
+                  label: 'فیلد', key: 'field', type: 'select',
                   options: [
-                      {
-                          value: 'name',
-                          label: 'نام',
-                      },
-                      {
-                          value: 'price',
-                          label: 'قیمت',
-                      },
-                      {
-                          value: 'location',
-                          label: 'محل',
-                      },
+                    {
+                      value: 'عنوان',
+                      label: 'عنوان',
+                    },
+                    {
+                      value: 'قیمت',
+                      label: 'قیمت',
+                    },
                   ]
-              },
-          ]}
-          data={[
-              {firstName: 'name1', lastName: 'family1'},
-              {firstName: 'name2', lastName: 'family2'},
-              {firstName: 'name3', lastName: 'family3'},
-              {firstName: 'name4', lastName: 'family4'},
-              {firstName: 'name5', lastName: 'family5'},
-              {firstName: 'name6', lastName: 'family6'},
-              {firstName: 'name7', lastName: 'family7'},
-              {firstName: 'name8', lastName: 'family8'},
-              {firstName: 'name9', lastName: 'family9'},
-              {firstName: 'name10', lastName: 'family10'},
-              {firstName: 'name10', lastName: 'family11'},
-              {firstName: 'name12', lastName: 'family12'},
-              {firstName: 'name13', lastName: 'family13'},
-              {firstName: 'name14', lastName: 'family14'},
-              {firstName: 'name15', lastName: 'family15'},
-              {firstName: 'name16', lastName: 'family16'},
-              {firstName: 'name17', lastName: 'family17'},
-              {firstName: 'name18', lastName: 'family18'},
-              {firstName: 'name19', lastName: 'family19'},
-              {firstName: 'name20', lastName: 'family20'},
-          ]}
-      />
-    </div>
-  );
+                },
+              ]}
+              data={data}
+          />
+          }
+        </div>
+    );
+  }
 }
 
 export default App;

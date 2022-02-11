@@ -3,17 +3,19 @@ import PropTypes from "prop-types";
 
 class TextInput extends Component {
     static propTypes = {
-        options: PropTypes.array,
+        value: PropTypes.string,
         onChange: PropTypes.func,
+        onEnter: PropTypes.func,
     };
     static defaultProps = {
-        options : [],
+        value : '',
         onChange: ()=>{},
+        onEnter: ()=>{},
     };
     constructor(props) {
         super(props);
         this.state={
-            value: '',
+            value: props.value,
         }
     }
 
@@ -21,8 +23,15 @@ class TextInput extends Component {
         this.props.onChange(this.state.value);
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.value !== this.props.value){
+            this.setState({value: this.props.value})
+        }
+    }
+
     render() {
         let {value} = this.state;
+        let {onEnter} = this.props;
         return (
             <input
                 type={'text'}
@@ -32,8 +41,11 @@ class TextInput extends Component {
                 }}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                        this.onChange()
+                        onEnter(value)
                     }
+                }}
+                onBlur={()=>{
+                    this.onChange()
                 }}
             />
         );

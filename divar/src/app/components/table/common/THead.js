@@ -6,14 +6,16 @@ class THead extends Component {
     static propTypes = {
         columns: PropTypes.array,
         onSort: PropTypes.func,
+        sortKey: PropTypes.object,
     };
     static defaultProps = {
         columns : [],
         onSort: ()=>{},
+        sortKey: undefined,
     };
 
     render() {
-        let {columns, onSort} = this.props;
+        let {columns, onSort, sortKey} = this.props;
         return (
             <thead>
                 <tr>
@@ -22,7 +24,7 @@ class THead extends Component {
                             {col.label}
                             {col.sortable &&
                                 <SortButton
-                                    operation={'none'}
+                                    operation={sortKey && sortKey.key === col.key && sortKey.operation || 'none'}
                                     onChange={(newOperation)=>{
                                         onSort(col.key, newOperation);
                                     }}
