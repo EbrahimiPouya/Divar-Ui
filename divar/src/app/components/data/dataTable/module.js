@@ -1,5 +1,4 @@
 export const sortData = (data , sortKey)=>{
-    console.log('data sort ing')
     if(sortKey.operation === 'none'){
         return data;
     }
@@ -54,4 +53,20 @@ const sortByDateAsyc = (data, key)=>{
             return -1;
         return 1
     })
+}
+
+export const filterData = (data , filter)=>{
+    if(filter.value){
+        switch (filter.type) {
+            case 'string':
+                return data.filter(item=>item[filter.key].includes(filter.value))
+            case 'data':
+                return data.filter( item=>item[filter.key] >=(filter.value[0]) && item[filter.key]  <= (filter.value[1]) )
+            case 'select':
+                return data.filter( item=>item[filter.key] === filter.value)
+            default:
+                return data
+        }
+    }
+    return data;
 }

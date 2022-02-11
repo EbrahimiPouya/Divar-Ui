@@ -9,6 +9,27 @@ function App() {
               {label: 'نام', key: 'firstName', sortable: true },
               {label: 'نام خانوادگی', key: 'lastName'},
           ]}
+          filters={[
+              {label: 'نام', key: 'firstName', type: 'string' },
+              {label: 'تاریخ', key: 'date', type: 'date' },
+              {label: 'نام آگهی', key: 'adName', type: 'string' },
+              {label: 'فیلد', key: 'field', type: 'select',
+                  options: [
+                      {
+                          value: 'name',
+                          label: 'نام',
+                      },
+                      {
+                          value: 'price',
+                          label: 'قیمت',
+                      },
+                      {
+                          value: 'location',
+                          label: 'محل',
+                      },
+                  ]
+              },
+          ]}
           data={[
               {firstName: 'name1', lastName: 'family1'},
               {firstName: 'name2', lastName: 'family2'},

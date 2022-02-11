@@ -2,17 +2,20 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import Table from "../../table/Table";
 import TablePagination from "./common/TablePagination";
-import {sortData} from "./module";
+import {sortData, filterData} from "./module";
+import Filters from "./common/Filters";
 
 class DataTable extends Component {
     static propTypes={
         columns: PropTypes.array,
+        filters: PropTypes.array,
         data: PropTypes.array,
         limits: PropTypes.array,
         defaultLimit: PropTypes.number,
     }
     static defaultProps={
         columns: [],
+        filters: [],
         data: [],
         limits: [5, 10, 20, 50 ],
         defaultLimit: 10,
@@ -42,11 +45,23 @@ class DataTable extends Component {
         this.setState({data: sortData([...data] , sortKey)});
     }
 
+    filterData = (key, type, value) =>{
+        let {data} = this.props;
+        let filterKey = {key, value, type};
+        this.setState({data: filterData([...data] , filterKey)});
+    }
+
     render() {
-        let {columns, limits, } = this.props;
+        let {columns, limits, filters} = this.props;
         let {limit, page, data}= this.state;
         return (
             <div>
+                <Filters
+                    filters={filters}
+                    onFilter={(key, type, value)=>{
+                        this.filterData(key, type, value)
+                    }}
+                />
                 <Table
                     data={[...data].slice((page-1)*limit ,(page-1)*limit + limit )}
                     columns={columns}

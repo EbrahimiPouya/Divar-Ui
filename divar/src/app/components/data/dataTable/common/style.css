@@ -5,3 +5,12 @@
 .limit{
     display: flex;
 }
+
+.filters{
+    display: flex;
+}
+
+.filter-item{
+    position: relative;
+    text-align: right;
+}
