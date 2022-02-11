@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import Table from "../../table/Table";
 import TablePagination from "./common/TablePagination";
+import {sortData} from "./module";
 
 class DataTable extends Component {
     static propTypes={
@@ -21,6 +22,7 @@ class DataTable extends Component {
         this.state={
             limit: props.defaultLimit,
             page: 1,
+            data: props.data
         }
     }
 
@@ -34,14 +36,23 @@ class DataTable extends Component {
         this.setState({limit: newLimit})
     }
 
+    sortData = (key , operation)=>{
+        let {data} = this.props;
+        let sortKey = {key, operation};
+        this.setState({data: sortData([...data] , sortKey)});
+    }
+
     render() {
-        let {columns, data, limits, } = this.props;
-        let {limit, page}= this.state;
+        let {columns, limits, } = this.props;
+        let {limit, page, data}= this.state;
         return (
             <div>
                 <Table
                     data={[...data].slice((page-1)*limit ,(page-1)*limit + limit )}
                     columns={columns}
+                    onSort={(key, operation)=>{
+                        this.sortData(key, operation)
+                    }}
                 />
                 <TablePagination
                     limits={limits}

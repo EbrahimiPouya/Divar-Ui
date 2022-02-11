@@ -6,7 +6,7 @@ function App() {
     <div className="App">
       <DataTable
           columns={[
-              {label: 'نام', key: 'firstName'},
+              {label: 'نام', key: 'firstName', sortable: true },
               {label: 'نام خانوادگی', key: 'lastName'},
           ]}
           data={[

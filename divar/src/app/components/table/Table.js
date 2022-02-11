@@ -7,17 +7,22 @@ class Table extends Component {
     static propTypes={
         columns: PropTypes.array,
         data: PropTypes.array,
+        onSort: PropTypes.func,
     }
     static defaultProps={
         columns: [],
         data: [],
+        onSort: ()=>{},
     }
     render() {
-        let {columns, data} = this.props;
+        let {columns, data, onSort} = this.props;
         return (
             <table border={1}>
                 <THead
                     columns={columns}
+                    onSort={(key, operation)=>{
+                        onSort(key, operation);
+                    }}
                 />
                 <TBody
                     columns={columns}
