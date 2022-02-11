@@ -94,20 +94,20 @@ export const createBTSData = (data)=> {
 
 export const dateFilter = (BSTData, date , params, sortKey)=>{
     let start = 0;
-    let end = BSTData.length;
+    let end = BSTData.length-1;
     let active = true;
     let index = Math.floor((start + end) /2);
-    while (active && start < index && index < end){
+    while ( start <= end){
         index = Math.floor((start + end) /2);
         if(BSTData[index].date === date){
-            active = false;
+            break;
         }
         else {
             if(BSTData[index].date > date){
-                end = index;
+                end = index-1;
             }
             else {
-                start = index;
+                start = index+1;
             }
         }
     }
